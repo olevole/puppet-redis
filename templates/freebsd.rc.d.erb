@@ -1,0 +1,30 @@
+#!/bin/sh
+# PROVIDE: redis-<%= @redisname %>
+# REQUIRE: LOGIN
+# BEFORE:  securelevel
+# KEYWORD: shutdown
+
+# Add the following line to /etc/rc.conf to enable `redis_<%= @redisname %>':
+#
+#redis_<%= @redisname %>_enable="YES"
+#
+
+. /etc/rc.subr
+
+name="redis_<%= @redisname %>"
+rcvar="${name}_enable"
+
+extra_commands="reload"
+
+command="/usr/local/bin/redis-server"
+pidfile="<%= @pidfile %>"
+
+# read configuration and set defaults
+load_rc_config "$name"
+: ${redis_<%= @redisname %>_enable="NO"}
+: ${redis_<%= @redisname %>_user="redis"}
+: ${redis_<%= @redisname %>_config="/usr/local/etc/redis-<%= @redisname %>.conf"}
+
+command_args="${redis_<%= @redisname %>_config}"
+required_files="${redis_<%= @redisname %>_config}"
+run_rc_command "$1"

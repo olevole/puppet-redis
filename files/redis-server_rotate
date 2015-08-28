@@ -1,0 +1,12 @@
+/var/log/redis/redis.log {
+	daily
+	dateext
+	dateformat .%Y-%m-%d
+	rotate 7
+	compress
+	compressext .gz
+	missingok
+	notifempty
+	create 0640 redis redis
+	sharedscripts
+}

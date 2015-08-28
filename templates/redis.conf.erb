@@ -1,0 +1,75 @@
+daemonize yes
+pidfile <%= @pidfile %>
+port <%= @port %>
+bind <%= @bind %>
+timeout <%= @timeout %>
+tcp-keepalive <%= @tcpkeepalive %>
+loglevel <%= @loglevel %>
+logfile <%= @redis_logfile %>
+<% if @syslog -%>
+syslog-enabled yes
+<%end-%>
+databases 16
+<% if !@aof -%>
+save 900 1
+save 300 10
+save 60 10000
+<% end -%>
+stop-writes-on-bgsave-error yes
+rdbcompression yes
+rdbchecksum yes
+dbfilename <%= @dbfilename %>
+dir <%= @dir %>
+slave-serve-stale-data yes
+slave-read-only yes
+repl-disable-tcp-nodelay no
+slave-priority <%= @slave_priority %>
+appendonly <%= @appendonly %>
+appendfilename <%= @appendfilename %>
+appendfsync everysec
+no-appendfsync-on-rewrite no
+<% if @aof -%>
+auto-aof-rewrite-percentage <%= @aof_auto_rewrite_percentage %>
+auto-aof-rewrite-min-size <%= @aof_auto_rewrite_min_size %>
+aof-rewrite-incremental-fsync yes
+<% end -%>
+<% if not @masterip.empty? -%>
+slaveof <%= @masterip %> <%= @masterport %>
+<% end -%>
+<% if not @masterauth.empty? -%>
+masterauth <%= @masterauth %>
+<% end -%>
+<% if not @requirepass.empty? -%>
+requirepass <%= @requirepass %>
+<% end -%>
+<% if not @maxclients.empty? -%>
+maxclients <%= @maxclients %>
+<% end -%>
+<% if not @maxmemory.empty? -%>
+maxmemory <%= @maxmemory %>
+<% if not @maxmemory_policy.empty? -%>
+maxmemory_policy <%= @maxmemory_policy %>
+<% end -%>
+<% if not @maxmemory_samples.empty? -%>
+maxmemory_samples <%= @maxmemory_samples %>
+<% end -%>
+<% end -%>
+<% if @glueoutputbuf -%>
+glueoutputbuf yes
+<%end-%>
+lua-time-limit 5000
+slowlog-log-slower-than 10000
+slowlog-max-len 128
+notify-keyspace-events ""
+hash-max-ziplist-entries 512
+hash-max-ziplist-value 64
+list-max-ziplist-entries 512
+list-max-ziplist-value 64
+set-max-intset-entries 512
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
+activerehashing yes
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit slave 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+hz 10
